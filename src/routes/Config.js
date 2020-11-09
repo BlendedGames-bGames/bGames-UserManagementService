@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const mysqlConnection = require('../database');
 
+/*
+Input: Nothing
+Output: List of all the players of Blended Games
+Description: Simple MYSQL query
+*/
 router.get('/players/',(req,res)=>{
     var aux = undefined;
     mysqlConnection.query('SELECT*FROM playerss',(err,rows,fields)=>{
@@ -21,6 +26,12 @@ router.get('/players/',(req,res)=>{
         }
     })
 })
+
+/*
+Input: Id of a player (range 0 to positive int)
+Output: Name, pass and age of that player
+Description: Simple MYSQL query
+*/
 router.get('/players/:id', (req,res) =>{
     const {id} = req.params;
     console.log("entro en el GET");
@@ -43,7 +54,11 @@ router.get('/players/:id', (req,res) =>{
         }
     })
 })
-
+/*
+Input: Id of a player (range 0 to positive int)
+Output: Void (authentication of the player in the system)
+Description: Simple MYSQL query
+*/
 router.get('/player/:name/:pass', (req,res) =>{
     var aux = undefined;
     const name = req.params.name
@@ -70,22 +85,14 @@ router.get('/player/:name/:pass', (req,res) =>{
 })
 
 
-/*router.get('/players/:id/config/', (req,res) =>{
-    const{id}= req.params;
-    mysqlConnection.query('SELECT*FROM attributes WHERE players_id_players = ?',[id],(err,rows,fields)=>{
-        if(!err){
-            res.json(rows);
-        } else {
-            console.log(err);
-        }
-    })
-    console.log(id);
-})
-*/
-
 // OPCIONES DE CONFIGURACION
 
 // add or eddit player, hay que probarlo!!!!! parece que esta malo un Not o un True del 1er if
+/*
+Input: Name, pass and age of that player
+Output: Void (Creates a new player with the input information)
+Description: Simple MYSQL query
+*/
 router.post('/players/',(req,res)=>{
     const {name,pass,age} = req.body;
     console.log(req.body);
@@ -117,6 +124,11 @@ router.post('/players/',(req,res)=>{
     })
 })
 
+/*
+Input: Name, pass and age of that player
+Output: Void (Edits an existing player in the db)
+Description: Simple MYSQL query
+*/
 //Con id en 0 se ingresa un nuevo jugador, con cualquier otro id se edita el existente
 router.put('/players/:id',(req,res)=>{
     console.log("entro en el PUT");
@@ -124,11 +136,11 @@ router.put('/players/:id',(req,res)=>{
     const {id} = req.params;
     //console.log("El selec entrega: "+JSON.parse(JSON.stringify(req.body))[0]);
     const query = `
-    SET @id = ?;
-    SET @name = ?;
-    SET @pass = ?;
-    SET @age = ?;
-    CALL playerAddOrEdit(@id,@name,@pass,@age);
+            SET @id = ?;
+            SET @name = ?;
+            SET @pass = ?;
+            SET @age = ?;
+            CALL playerAddOrEdit(@id,@name,@pass,@age);
     `;
     mysqlConnection.query('SELECT*FROM playerss WHERE id_players = ?',[id],(err,rows,fields)=>{
         console.log("El selec entrega: "+rows);try{
@@ -152,7 +164,11 @@ router.put('/players/:id',(req,res)=>{
     })
 
 })
-
+/*
+Input: Id of a player (range 0 to positive int)
+Output: Void (Deletes the player of the database)
+Description: Simple MYSQL query
+*/
 router.delete('/players/:id',(req,res)=>{
     const {id} = req.params;
     mysqlConnection.query('DELETE FROM playerss WHERE id_players =?',[id],(err,rows,fields)=>{
