@@ -26,7 +26,25 @@ router.get('/players/',(req,res)=>{
         }
     })
 })
-
+router.get('/players/id',(req,res)=>{
+    var aux = undefined;
+    mysqlConnection.query('SELECT id_players FROM playerss',(err,rows,fields)=>{
+        try{
+            aux = JSON.parse(JSON.stringify(rows))[0]
+        }catch{
+            res.json("Error in parse Json, please retry");
+        }
+        if (undefined == aux){
+            res.json("Error on obtain resume");
+        }else{
+            if(!err){
+                res.json(rows);
+            } else {
+                console.log(err);
+            }
+        }
+    })
+})
 /*
 Input: Id of a player (range 0 to positive int)
 Output: Name, pass and age of that player
