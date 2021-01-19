@@ -1,1 +1,1 @@
-# bGames-ConfigurationService
+# bGames-UserManagementService
