@@ -1,6 +1,7 @@
 import logger from 'morgan';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors'
 
 //Routes
 
@@ -13,7 +14,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(cors({
+    origin: ["*"],
+    methods: ["POST", "GET","PUT"]
+}))
 //Routes
 app.use(player_config);
 
