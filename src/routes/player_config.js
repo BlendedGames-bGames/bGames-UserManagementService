@@ -113,6 +113,36 @@ player_config.get('/player/:name/:pass', (req,res) =>{
 
 // OPCIONES DE CONFIGURACION
 
+player_config.post('/player',(req,res)=>{
+    const {name,email,password,external_type,external_id} = req.body;
+    console.log(req.body);
+    var insertInto = 'INSERT INTO `playerss` '
+    var columnValues = '(`name`,`email`,`password`, `external_type`, `external_id`) '
+    if(password === undefined){
+        password = ''
+    }
+    var newValues = 'VALUES (?,?,?,?,?)'
+    var query = insertInto+columnValues+newValues
+    mysqlConnection.getConnection(function(err, connection) {
+        if (err){
+            res.status(400).json({message:'No se pudo obtener una conexion para realizar la consulta en la base de datos, consulte nuevamente', error: err})
+            throw err
+        } 
+        connection.query(query,[name,email,password,external_type,external_id], function(err,rows,fields){
+            if (!err){
+                console.log(rows);
+                res.status(200).json(rows)
+            } else {
+                console.log(err);
+                res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
+            }
+            connection.release();
+
+        });
+    })
+   
+})
+
 // add or eddit player, hay que probarlo!!!!! parece que esta malo un Not o un True del 1er if
 /*
 Input: Name, pass and age of that player
@@ -199,7 +229,7 @@ player_config.delete('/players/:id',(req,res)=>{
     const {id} = req.params;
     mysqlConnection.query('DELETE FROM playerss WHERE id_players =?',[id],(err,rows,fields)=>{
         if(!err){
-            res.json({Status:'Player Deleted'});
+            res.json({Status:`Player ${id} Deleted`});
         } else {
             console.log(err);
         }
