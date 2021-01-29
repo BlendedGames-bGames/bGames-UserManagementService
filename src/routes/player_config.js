@@ -114,7 +114,7 @@ player_config.get('/player/:name/:pass', (req,res) =>{
 // OPCIONES DE CONFIGURACION
 
 player_config.post('/player',(req,res)=>{
-    const {name,email,password,external_type,external_id} = req.body;
+    let {name,email,password,external_type,external_id} = req.body;
     console.log(req.body);
     var insertInto = 'INSERT INTO `playerss` '
     var columnValues = '(`name`,`email`,`password`, `external_type`, `external_id`) '
