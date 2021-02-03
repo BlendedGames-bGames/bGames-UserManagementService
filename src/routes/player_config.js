@@ -53,6 +53,32 @@ player_config.get('/players/id',(req,res)=>{
         }
     })
 })
+
+player_config.get('/player_by_email/:email',(req,res)=>{
+    var email = req.params.email;
+    var select = 'SELECT `playerss`.`id_players` '
+    var from = 'FROM `playerss` '
+    var where = 'WHERE `playerss`.`email` = ? '
+
+    var query = select+from+where
+    mysqlConnection.getConnection(function(err, connection) {
+        if (err){
+            res.status(400).json({message:'No se pudo obtener una conexion para realizar la consulta en la base de datos, consulte nuevamente', error: err})
+            throw err
+        }
+        connection.query(query,[email], function(err,rows,fields){
+            if (!err){
+                console.log(rows);
+                res.status(200).json(rows)
+            } else {
+                console.log(err);
+                res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
+            }
+            connection.release();
+
+        });
+    })
+})
 /*
 Input: Id of a player (range 0 to positive int)
 Output: Name, pass and age of that player
