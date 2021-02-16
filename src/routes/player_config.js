@@ -187,7 +187,10 @@ player_config.post('/create_desktop_key/:id_player',(req,res)=>{
         connection.query(query,[key, id_player], function(err,rows,fields){
             if (!err){
                 console.log(rows);
-                res.status(200).json(key)
+                const data = {
+                    "key": key
+                }
+                res.status(200).json(data)
             } else {
                 console.log(err);
                 res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
