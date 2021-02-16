@@ -170,6 +170,60 @@ player_config.post('/player',(req,res)=>{
    
 })
 
+player_config.post('/create_desktop_key/:id_player',(req,res)=>{
+    var key = req.body.key
+    var id_player = req.params.id_player
+
+    var update = 'UPDATE `playerss`'
+    var set = ' SET `desktop_key` = ? '
+    var where = ' WHERE `playerss`.`id_players` = ?'
+
+    var query = update+set+where
+    mysqlConnection.getConnection(function(err, connection) {
+        if (err){
+            res.status(400).json({message:'No se pudo obtener una conexion para realizar la consulta en la base de datos, consulte nuevamente', error: err})
+            throw err
+        } 
+        connection.query(query,[key, id_player], function(err,rows,fields){
+            if (!err){
+                console.log(rows);
+                res.status(200).json(key)
+            } else {
+                console.log(err);
+                res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
+            }
+            connection.release();
+
+        });
+      })
+
+    let {name,email,password,external_type,external_id} = req.body;
+    console.log(req.body);
+    var insertInto = 'INSERT INTO `playerss` '
+    var columnValues = '(`desktop_key`) '
+ 
+    var newValues = 'VALUES (?,?,?,?,?)'
+    var query = insertInto+columnValues+newValues
+    mysqlConnection.getConnection(function(err, connection) {
+        if (err){
+            res.status(400).json({message:'No se pudo obtener una conexion para realizar la consulta en la base de datos, consulte nuevamente', error: err})
+            throw err
+        } 
+        connection.query(query,[name,email,password,external_type,external_id], function(err,rows,fields){
+            if (!err){
+                console.log(rows);
+                res.status(200).json(rows)
+            } else {
+                console.log(err);
+                res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
+            }
+            connection.release();
+
+        });
+    })
+   
+})
+
 // add or eddit player, hay que probarlo!!!!! parece que esta malo un Not o un True del 1er if
 /*
 Input: Name, pass and age of that player
