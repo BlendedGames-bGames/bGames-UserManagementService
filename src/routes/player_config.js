@@ -173,7 +173,7 @@ player_config.post('/player',(req,res)=>{
 player_config.post('/create_desktop_key/:id_player',(req,res)=>{
     var key = req.body.key
     var id_player = req.params.id_player
-
+    console.log(key, id_player)
     var update = 'UPDATE `playerss`'
     var set = ' SET `desktop_key` = ? '
     var where = ' WHERE `playerss`.`id_players` = ?'
