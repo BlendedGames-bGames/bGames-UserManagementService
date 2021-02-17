@@ -70,7 +70,8 @@ player_config.get('/player_by_email/:email',(req,res)=>{
             if (!err){
                 let id = rows[0]
                 console.log(rows);
-                res.status(200).json(id)
+                console.log(typeof(id))
+                res.status(200).json(JSON.stringify(id))
             } else {
                 console.log(err);
                 res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
