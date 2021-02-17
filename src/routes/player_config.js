@@ -56,7 +56,7 @@ player_config.get('/players/id',(req,res)=>{
 
 player_config.get('/player_by_email/:email',(req,res)=>{
     var email = req.params.email;
-    var select = 'SELECT `playerss`.`id_players` '
+    var select = 'SELECT `playerss`.`id_players`, `playerss`.`desktop_key` '
     var from = 'FROM `playerss` '
     var where = 'WHERE `playerss`.`email` = ? '
 
