@@ -64,14 +64,13 @@ player_config.get('/player_by_email/:email',(req,res)=>{
     mysqlConnection.getConnection(function(err, connection) {
         if (err){
             res.status(400).json({message:'No se pudo obtener una conexion para realizar la consulta en la base de datos, consulte nuevamente', error: err})
-            throw err
+            throw err;
         }
         connection.query(query,[email], function(err,rows,fields){
             if (!err){
                 let id = rows[0]
                 console.log(rows);
-                console.log(typeof(id))
-                res.status(200).json(JSON.stringify(id))
+                res.status(200).json(id)
             } else {
                 console.log(err);
                 res.status(400).json({message:'No se pudo consultar a la base de datos', error: err})
@@ -117,7 +116,8 @@ player_config.get('/player/:name/:pass', (req,res) =>{
     var aux = undefined;
     const name = req.params.name
     const pass = req.params.pass
-    mysqlConnection.query('SELECT*FROM playerss WHERE name = ? AND password = ?',[name, pass],(err,rows,fields) =>{
+    console.log(name+","+pass);
+    mysqlConnection.query('SELECT* FROM playerss WHERE name = ? AND password = ?',[name, pass],(err,rows,fields) =>{
         try{
             aux = JSON.parse(JSON.stringify(rows))[0]
         }catch{
